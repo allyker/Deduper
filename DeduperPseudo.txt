@@ -95,7 +95,6 @@ if -u
   open u.arg
     make tuple? of all umis
 
-(LOOK AT CHROMOSOMES, MAKE DICTIONARY??)
 open SAM file, open output SAM file
   read line
     if starts with @
@@ -106,7 +105,7 @@ open SAM file, open output SAM file
       (check chromosome)
     empty dictionary
     -will store POS as key and UMI as value
-    
+
     split line into parts, store line as whatever (tuple again?)
       UMI_check(UMI)
         skip line if fails (non-error correct/non randomer mode)
