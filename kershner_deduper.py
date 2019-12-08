@@ -64,7 +64,7 @@ def CIGAR_check(CIGAR, POS, dire):
     else:
         FSadj=int(adjf[0].rstrip("S"))
         if dire=="F":
-            POS-=FSadj
+            POS-=int(FSadj)
         if dire=="R":
             rev=0
             for item in adjr:
@@ -107,10 +107,10 @@ with open(args.file, "rt") as fh, open(infile+"_deduped.sam", "wt") as outfile:
         else:
             umilist=line[0].split(":")
 #Print out lines and empty storage dict after each chromosome
-            if CHR != int(line[2]):
+            if CHR != line[2]:
                 for key in Store_dict:
                     print(*Store_dict[key], file=outfile)
-                CHR=int(line[2])
+                CHR=line[2]
                 Store_dict={}
 #Compare POS, FLAG, and UMI if given UMI file
             if args.umi is not None:
@@ -118,7 +118,7 @@ with open(args.file, "rt") as fh, open(infile+"_deduped.sam", "wt") as outfile:
                 if UMI != "BAD":
                     FLAG=FLAG_check(int(line[1]))
                     if FLAG != "UNMAPPED":
-                        POS=CIGAR_check(line[5], line[3], FLAG)
+                        POS=CIGAR_check(line[5], int(line[3]), FLAG)
                         Store_dict.setdefault((POS,FLAG,UMI), line)
 #Compare POS, FLAG, and UMI if not given UMI file
             if args.umi is None:
@@ -126,5 +126,5 @@ with open(args.file, "rt") as fh, open(infile+"_deduped.sam", "wt") as outfile:
                 if UMI != "BAD":
                     FLAG=FLAG_check(int(line[1]))
                     if FLAG != "UNMAPPED":
-                        POS=CIGAR_check(line[5], line[3], FLAG)
+                        POS=CIGAR_check(line[5], int(line[3]), FLAG)
                         Store_dict.setdefault((POS,FLAG,UMI), line)
